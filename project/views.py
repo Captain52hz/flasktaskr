@@ -1,7 +1,7 @@
 import sqlite3
 from functools import wraps
 
-from flask import Flask, flash, render_template
+from flask import Flask, flash, render_template, request
 
 app = Flask(__name__)
 app.config.from_object('_config')
@@ -27,7 +27,7 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-	if request.method == 'POST'
+	if request.method == 'POST':
 		if request.form['username'] != app.config['USERNAME'] \
 		         or request.form['password'] != app.config['PASSWORD']:
 		     error = 'Invalid Credentials. Please try again.'

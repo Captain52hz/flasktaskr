@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome to Flasktaskr!!</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+	<div class="page">
+		
+		{% for message in get_flashed_messages() %}
+			<div class="flash">{{ message }}</div>
+		{% endfor %}
+
+		{% if error %}
+			<div><strong>Error:</strong></div>
+		{% endif %}
+
+		<br>
+
+		{% block content %}
+		{% endblock %}
+	</div>
+</body>
+</html>
