@@ -1,6 +1,8 @@
 Click==7.0
 Flask==0.11.1
+Flask-WTF==0.12
 itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.1
 Werkzeug==0.15.2
+WTForms==2.2.1
