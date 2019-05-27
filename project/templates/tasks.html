@@ -3,10 +3,10 @@
 
 <h1>Welcome to FlaskTaskr</h1>
 <br>
-<a href="{{ url_for('logout') }}">Logout</a>
+<a href="{{ url_for('users.logout') }}">Logout</a>
 <div class="add-task">
   <h3>Add a new task:</h3>
-  <form action="{{ url_for('new_task') }}" method="post">
+  <form action="{{ url_for('tasks.new_task') }}" method="post">
     {{ form.csrf_token }}
     <div class="form-group">
       {{ form.name(placeholder="name") }}
@@ -39,7 +39,7 @@
         </div>
       {% endif %}
     </div>
-    <div class="input-group">
+    <div class="form-group">
       <input type="submit" class="btn btn-default" value="Submit">
     </div>
   </form>
@@ -68,8 +68,12 @@
           <td width="50px">{{ task.priority }}</td>
           <td width="90px">{{ task.poster.name }}</td>
           <td>
-            <a href="{{ url_for('delete_entry', task_id = task.task_id) }}">Delete</a>  -
-            <a href="{{ url_for('complete', task_id = task.task_id) }}">Mark as Complete</a>
+            {% if task.poster.name == session.name or session.role =="admin" %}
+              <a href="{{ url_for('tasks.delete_entry', task_id = task.task_id) }}">Delete</a>  -
+              <a href="{{ url_for('tasks.complete', task_id = task.task_id) }}">Mark as Complete</a>
+            {% else %}
+              <span>N/A</span>
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
@@ -100,7 +104,11 @@
           <td width="50px">{{ task.priority }}</td>
           <td width="90px">{{ task.poster.name }}</td>
           <td>
-            <a href="{{ url_for('delete_entry', task_id = task.task_id) }}">Delete</a>
+            {% if task.poster.name == session.name or session.role =="admin" %}
+              <a href="{{ url_for('tasks.delete_entry', task_id = task.task_id) }}">Delete</a>
+            {% else %}
+              <span>N/A</span>
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
