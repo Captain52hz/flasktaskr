@@ -12,11 +12,14 @@ class TasksTests(unittest.TestCase):
 		# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 		app.config['TESTING'] = True
 		app.config['WTF_CSRF_ENABLED'] = False
+		app.config['DEBUG'] = False
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 		    os.path.join(basedir, TEST_DB)
 		self.app = app.test_client()
 		db.create_all()
 
+		self.assertEqual = (app.debug, False)
+		
 	def tearDown(self):
 		db.session.remove()
 		db.drop_all()
@@ -69,7 +72,7 @@ class TasksTests(unittest.TestCase):
 		self.register('Fletcher', 'fletcher@realpython.com', 'python101', 'python101')
 		self.login('Fletcher', 'python101')
 		response = self.app.get('tasks/')
-		self.assertEqual(response.status_code, 200)
+		self.assertEquals(response.status_code, 200)
 		self.assertIn(b'Add a new task:', response.data)
 
 	def test_not_logged_in_users_cannot_access_tasks_page(self):
@@ -154,7 +157,7 @@ class TasksTests(unittest.TestCase):
 		db.session.commit()
 		tasks = db.session.query(Task).all()
 		for task in tasks:
-			self.assertEqual(task.name, 'Run around in circles')
+			self.assertEquals(task.name, 'Run around in circles')
 
 	def test_task_template_displays_logged_in_user_name(self):
 		self.register(

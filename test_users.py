@@ -12,11 +12,13 @@ class UsersTests(unittest.TestCase):
 		# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 		app.config['TESTING'] = True
 		app.config['WTF_CSRF_ENABLED'] = False
+		app.config['DEBUG'] = False
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 		    os.path.join(basedir, TEST_DB)
 		self.app = app.test_client()
 		db.create_all()
 
+		self.assertEqual = (app.debug, False)
 	def tearDown(self):
 		db.session.remove()
 		db.drop_all()
@@ -56,7 +58,7 @@ class UsersTests(unittest.TestCase):
 
 	def test_form_is_present_on_login_page(self):
 		response = self.app.get('/')
-		self.assertEqual(response.status_code, 200)
+		self.assertEquals(response.status_code, 200)
 		self.assertIn(b'Please sign in to access your task list', response.data)
 
 	def test_users_cannot_login_unless_registered(self):
@@ -75,7 +77,7 @@ class UsersTests(unittest.TestCase):
 
 	def test_form_is_present_on_register_page(self):
 		response = self.app.get('register/')
-		self.assertEqual(response.status_code, 200)
+		self.assertEquals(response.status_code, 200)
 		self.assertIn(b'Please register to access the task list', response.data)
 
 	def test_user_registration(self):
@@ -128,7 +130,7 @@ class UsersTests(unittest.TestCase):
 		db.session.commit()
 		users = db.session.query(User).all()
 		for user in users:
-			self.assertEqual(user.name, 'Johnny')
+			self.assertEquals(user.name, 'Johnny')
 
 	def test_default_user_role(self):
 		db.session.add(
@@ -142,7 +144,7 @@ class UsersTests(unittest.TestCase):
 
 		users = db.session.query(User).all()
 		for user in users:
-			self.assertEqual(user.role, 'user')
+			self.assertEquals(user.role, 'user')
 
 	def create_user(self, name, email, password):
 		new_user = User(name=name, email=email, password=bcrypt.generate_password_hash(password))
